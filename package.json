@@ -1,0 +1,13 @@
+{
+  "name": "oyana-server-tools",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Modular BeamMP server tools with a shared client mod and Angular UI",
+  "scripts": {
+    "build:ui": "node ./tools/build-client-ui.mjs",
+    "package:client": "node ./tools/package-client-mod.mjs",
+    "package:server": "node ./tools/package-server-resource.mjs",
+    "package": "node ./tools/make-release.mjs",
+    "release": "node ./tools/make-release.mjs"
+  }
+}

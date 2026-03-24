@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: rgba(15, 23, 42, 0.9);
+  color: #fff;
+}
+
+.ost-shell {
+  padding: 16px;
+}
