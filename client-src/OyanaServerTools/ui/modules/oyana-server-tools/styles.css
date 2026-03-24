@@ -1,10 +1,61 @@
+:root {
+  color-scheme: dark;
+  font-family: Arial, sans-serif;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: rgba(15, 23, 42, 0.9);
   color: #fff;
+  background: transparent;
 }
 
 .ost-shell {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: 320px;
   padding: 16px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.ost-header {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.ost-subtitle,
+.countdown-status,
+.feature-list {
+  margin-top: 6px;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.countdown {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.95);
+  text-align: center;
+}
+
+.countdown.hidden {
+  display: none;
+}
+
+.countdown-label {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.countdown-value {
+  margin-top: 10px;
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
 }

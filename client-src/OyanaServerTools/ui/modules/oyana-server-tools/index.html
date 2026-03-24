@@ -8,9 +8,14 @@
   </head>
   <body>
     <div class="ost-shell">
-      <h1>Oyana Server Tools</h1>
-      <p>Packaged UI placeholder. Angular build output should replace this content.</p>
-      <div id="app"></div>
+      <div class="ost-header">Oyana Server Tools</div>
+      <div class="ost-subtitle">Countdown vertical slice ready</div>
+      <div id="countdown" class="countdown hidden">
+        <div id="countdown-label" class="countdown-label">Race Start</div>
+        <div id="countdown-value" class="countdown-value">5</div>
+        <div id="countdown-status" class="countdown-status">Waiting for server event</div>
+      </div>
+      <div id="feature-list" class="feature-list"></div>
     </div>
     <script src="./app.js"></script>
   </body>
