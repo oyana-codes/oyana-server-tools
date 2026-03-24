@@ -32,11 +32,21 @@ function UI.emit(eventName, payload)
         'event:>UI>Career>Buy_01',
         true,
       })
+      triggerGuiHook('toastrMsg', {
+        type = 'success',
+        title = payload.label or 'Countdown',
+        msg = 'GO',
+      })
+    elseif not payload.active then
+      triggerGuiHook('toastrMsg', {
+        type = 'warning',
+        title = payload.label or 'Countdown',
+        msg = 'Stopped',
+      })
     end
   end
 
-  -- Placeholder for a custom HTML/JS bridge.
-  -- Replace with the real BeamNG UI communication mechanism when wired.
+  -- TODO: wire BeamNG HTML app bridge so window.OST_UI.dispatch receives these payloads.
 end
 
 return UI

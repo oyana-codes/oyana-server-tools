@@ -15,14 +15,27 @@ local function clampSeconds(seconds)
   return seconds
 end
 
-local function emitState(ctx, eventName)
+local function buildStatePayload(ctx)
   local state = ctx.state.countdown
-  ctx.events.broadcast(eventName, {
+  return {
     active = state.active and 'true' or 'false',
     label = state.label,
     secondsLeft = state.secondsLeft,
     totalSeconds = state.totalSeconds,
-  })
+  }
+end
+
+local function emitState(ctx, eventName)
+  ctx.events.broadcast(eventName, buildStatePayload(ctx))
+end
+
+local function syncStateToPlayer(ctx, playerId)
+  local state = ctx.state.countdown
+  if not state.active then
+    return
+  end
+
+  ctx.events.sendToPlayer(playerId, Shared.START, buildStatePayload(ctx))
 end
 
 local function stopCountdown(ctx, reason)
@@ -56,22 +69,31 @@ local function startCountdown(ctx, playerId, requestedSeconds, label)
 
   emitState(ctx, Shared.START)
   ctx.logger.info(('Player %s started countdown for %s seconds'):format(tostring(playerId), tostring(seconds)))
+  return seconds
 end
 
 function Tool.init(ctx)
   ctx.logger.info('Countdown tool ready')
 end
 
-function Tool.onCommand(ctx, playerId, command, args)
+function Tool.onPlayerJoining(ctx, playerId)
+  syncStateToPlayer(ctx, playerId)
+end
+
+function Tool.onCommand(ctx, playerId, _playerName, command, args)
   if command ~= 'countdown' then
-    return
+    return false
   end
 
   local action = args and args[1] or 'start'
 
   if action == 'stop' then
-    stopCountdown(ctx, 'manual')
-    return
+    if stopCountdown(ctx, 'manual') then
+      ctx.commands.reply(playerId, 'Countdown stopped.')
+    else
+      ctx.commands.reply(playerId, 'No active countdown to stop.')
+    end
+    return true
   end
 
   local seconds = action
@@ -81,7 +103,9 @@ function Tool.onCommand(ctx, playerId, command, args)
   end
   local label = #labelParts > 0 and table.concat(labelParts, ' ') or Config.defaultLabel
 
-  startCountdown(ctx, playerId, seconds, label)
+  local startedSeconds = startCountdown(ctx, playerId, seconds, label)
+  ctx.commands.reply(playerId, ('Countdown started for %d seconds (%s).'):format(startedSeconds, label))
+  return true
 end
 
 function Tool.update(ctx, now)

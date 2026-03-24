@@ -7,13 +7,15 @@ function Tool.init(ctx)
   ctx.logger.info(('Map tool ready on %s'):format(currentMap))
 end
 
-function Tool.onCommand(ctx, playerId, command, _args)
+function Tool.onCommand(ctx, playerId, _playerName, command, _args)
   if command ~= 'map' then
-    return
+    return false
   end
 
   local currentMap = ctx.maps.getCurrentMap()
-  ctx.events.sendToPlayer(playerId, 'OST:Map:Detected', currentMap)
+  ctx.events.sendToPlayer(playerId, 'OST:Map:Detected', { map = currentMap })
+  ctx.commands.reply(playerId, ('Current map: %s'):format(currentMap))
+  return true
 end
 
 return Tool
